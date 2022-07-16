@@ -13,10 +13,10 @@ const song = db.define(
       type: DataTypes.DATE
     },
     rating: {
-      type: DataTypes.INT
+      type: DataTypes.INTEGER
     },
     image: {
-      type: DataTypes.LONGBLOB
+      type: DataTypes.BLOB('long')
     }
   },
   { freezeTableName: true }
@@ -25,13 +25,13 @@ const artist = db.define(
   'artist',
   {
     name: {
-      type: DataTypes.VARCHAR
+      type: DataTypes.STRING
     },
     dob: {
       type: DataTypes.DATE
     },
     bio: {
-      type: DataTypes.VARCHAR
+      type: DataTypes.STRING
     }
   },
   { freezeTableName: true }
@@ -41,13 +41,13 @@ const users = db.define(
   'users',
   {
     name: {
-      type: DataTypes.VARCHAR
+      type: DataTypes.STRING
     },
     email: {
-      type: DataTypes.VARCHAR
+      type: DataTypes.STRING
     },
     password: {
-      type: DataTypes.VARCHAR
+      type: DataTypes.STRING
     }
   },
   { freezeTableName: true }
@@ -57,13 +57,13 @@ const artistSong = db.define(
   'artist_songs',
   {
     song_id: {
-      type: DataTypes.INT
+      type: DataTypes.INTEGER
     },
     artist_id: {
-      type: DataTypes.INT
+      type: DataTypes.INTEGER
     }
   },
   { freezeTableName: true }
 )
 
-export default { song, artist, users, artistSong }
+export { song, artist, users, artistSong }
