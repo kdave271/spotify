@@ -56,6 +56,20 @@ export const updateSongRating = async (req, res) => {
     res.json({ message: error.message })
   }
 }
+export const createUser = async(req,res)=>{
+  try {
+    let user = await users.findAlll({
+      where:{
+        email:req.param.email
+      }
+    })
+    if(user===null)
+      user = await users.create(req.body)
+    res.json(user)
+  } catch (error) {
+    res.json({ message: error.message })
+  }
+}
 export const getUser = async (req,res)=>{
   try {
     const user = await users.findAll({

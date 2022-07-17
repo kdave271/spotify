@@ -1,6 +1,28 @@
-import React from 'react'
-
+import axios from 'axios';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 const RegistrationForm = () => {
+
+  const navigate = useNavigate()
+
+  const [name,SetName] = useState('')
+  const [email,SetEmail] = useState('')
+  const [password, SetPassword] = useState('')
+
+  const addUser =async (e)=>{
+    e.preventDefault();
+    try{
+      await axios.post('http://localhost:5000/info/adduser',{
+        name:name,
+        email:email,
+        password:password
+      })
+    }catch(err)
+    {
+      console.log(err)
+      navigate('/home')
+    }
+  }
   return (
     <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div class="max-w-md w-full space-y-8">
@@ -14,7 +36,12 @@ const RegistrationForm = () => {
             Register
           </h2>
         </div>
-        <form class="mt-8 space-y-6" action="#" method="POST">
+        <form
+          class="mt-8 space-y-6"
+          action="#"
+          onSubmit={addUser}
+          method="POST"
+        >
           <input type="hidden" name="remember" value="true" />
           <div class="rounded-md shadow-sm space-y-2">
             <div>
@@ -27,6 +54,8 @@ const RegistrationForm = () => {
                 type="name"
                 autocomplete="name"
                 required
+                value={name}
+                onChange={e => SetName(e.target.value)}
                 class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Name"
               />
@@ -41,8 +70,10 @@ const RegistrationForm = () => {
                 type="email"
                 autocomplete="email"
                 required
+                value={email}
                 class="appearance-none  relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Email address"
+                onChange={e => SetEmail(e.target.value)}
               />
             </div>
             <div>
@@ -55,8 +86,10 @@ const RegistrationForm = () => {
                 type="password"
                 autocomplete="current-password"
                 required
+                value={password}
                 class="appearance-none  relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Password"
+                onChange={e => SetPassword(e.target.value)}
               />
             </div>
           </div>
