@@ -1,4 +1,4 @@
-import { song, artist, artistSong } from './../models/infoModel.js'
+import { song, artist, artistSong,users } from './../models/infoModel.js'
 
 export const getTop10Songs = async (req, res) => {
   try {
@@ -52,6 +52,19 @@ export const updateSongRating = async (req, res) => {
         id: req.param.id
       }
     })
+  } catch (error) {
+    res.json({ message: error.message })
+  }
+}
+export const getUser = async (req,res)=>{
+  try {
+    const user = await users.findAll({
+      where: {
+        email: req.param.email,
+        password: req.param.password
+      }
+    })
+    res.json(user)
   } catch (error) {
     res.json({ message: error.message })
   }
