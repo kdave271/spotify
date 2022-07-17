@@ -1,25 +1,32 @@
-import axios from 'axios';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 const RegistrationForm = () => {
-
   const navigate = useNavigate()
 
-  const [name,SetName] = useState('')
-  const [email,SetEmail] = useState('')
+  const [name, SetName] = useState('')
+  const [email, SetEmail] = useState('')
   const [password, SetPassword] = useState('')
+  const [alert, SetAlert] = useState(false)
 
-  const addUser =async (e)=>{
-    e.preventDefault();
-    try{
-      await axios.post('http://localhost:5000/info/adduser',{
-        name:name,
-        email:email,
-        password:password
-      })
+  setTimeout(() => {
+    SetAlert(false)
+  }, 3000)
+
+  const addUser = async e => {
+    e.preventDefault()
+    try {
+      await axios
+        .post('http://localhost:5000/info/adduser', {
+          name: name,
+          email: email,
+          password: password
+        })
+        .then(res => {
+          console.log('result: ', res)
+        })
       navigate('/home')
-    }catch(err)
-    {
+    } catch (err) {
       console.log(err)
     }
   }
@@ -102,6 +109,11 @@ const RegistrationForm = () => {
             </button>
           </div>
         </form>
+        {alert && (
+          <div className="flex justify-center text-lg">
+            <span>Account already exist</span>
+          </div>
+        )}
       </div>
     </div>
   )

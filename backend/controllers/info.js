@@ -1,4 +1,4 @@
-import { song, artist, artistSong,users } from './../models/infoModel.js'
+import { artist, artistSong, song, users } from './../models/infoModel.js'
 
 export const getTop10Songs = async (req, res) => {
   try {
@@ -63,13 +63,14 @@ export const createUser = async(req,res)=>{
         email:req.body.email
       }
     })
-    console.log("Lokesh ",user)
     if(!user)
     {
-      user = await users.create(req.body)
-      res.json(user)
+      // user = await users.create(req.body)
+      console.log('Not found');
+      res.send({ message: 'User Already Exist' })
     }
     else{
+      console.log("user found")
       res.json({"message":"User Already Exist"})
     }
   } catch (error) {
