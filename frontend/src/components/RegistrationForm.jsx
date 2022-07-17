@@ -17,10 +17,10 @@ const RegistrationForm = () => {
         email:email,
         password:password
       })
+      navigate('/home')
     }catch(err)
     {
       console.log(err)
-      navigate('/home')
     }
   }
   return (

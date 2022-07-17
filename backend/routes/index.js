@@ -3,8 +3,8 @@ import {getAllArtist,getTop10Artist,getTop10Songs,addArtist,addSong,updateSongRa
 
 const router = express.Router();
 
-router.get('/10songs',getTop10Songs)
-router.get('/10artist',getTop10Artist)
+router.get('/top10songs',getTop10Songs)
+router.get('/top10artist',getTop10Artist)
 router.get('/allartist',getAllArtist)
 router.post('/song',addSong)
 router.post('/artist',addArtist)

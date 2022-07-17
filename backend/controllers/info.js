@@ -58,14 +58,20 @@ export const updateSongRating = async (req, res) => {
 }
 export const createUser = async(req,res)=>{
   try {
-    let user = await users.findAlll({
+    let user = await users.findAll({
       where:{
-        email:req.param.email
+        email:req.body.email
       }
     })
-    if(user===null)
+    console.log("Lokesh ",user)
+    if(!user)
+    {
       user = await users.create(req.body)
-    res.json(user)
+      res.json(user)
+    }
+    else{
+      res.json({"message":"User Already Exist"})
+    }
   } catch (error) {
     res.json({ message: error.message })
   }
