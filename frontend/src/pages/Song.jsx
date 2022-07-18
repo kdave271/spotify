@@ -6,7 +6,7 @@ const Song = () => {
   
   return (
     <>
-      <Navbar />
+      <Navbar/>
       <AddSongComponent/>
     </>
   )

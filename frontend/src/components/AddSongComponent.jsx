@@ -1,7 +1,30 @@
-import React,{useState} from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 import ArtistModal from './ArtistModal'
 const AddSongComponent = () => {
+  const [formValue, SetFormValue] = useState({
+    title: '',
+    date_of_release: '',
+    bio: ''
+  })
+  const [artist, SetArtist] = useState([])
   const [showModal, SetShowModal] = useState(false)
+  
+  const handleChange = event => {
+    SetFormValue({
+      ...formValue,
+      [event.target.name]: event.target.value
+    })
+  }
+  const getArtists = async () => {
+    const response = await axios.get('http://localhost:5000/info/allartist')
+    SetArtist(response.data)
+  }
+  useEffect(() => {
+    getArtists()
+    artist.map(ele => console.log('artist ', ele.name))
+  }, [])
+
   return (
     <div className="flex flex-col items-center py-10 space-y-5">
       <span className="text-2xl font-medium ">Add New Song</span>
@@ -35,7 +58,6 @@ const AddSongComponent = () => {
                     type="Date"
                     name="email-address"
                     id="email-address"
-                    autocomplete="email"
                     className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm  border-gray-400 border-2 rounded"
                   />
                 </div>
@@ -74,18 +96,22 @@ const AddSongComponent = () => {
                     name="artist"
                     className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   >
-                    <option>United States</option>
-                    <option>Canada</option>
-                    <option>Mexico</option>
+                    {artist.map(ele => (
+                      <option
+                        id={ele.id}
+                        value={ele.name}
+                        className="capitalize rounded-md"
+                      >
+                        {ele.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
-                <div className="col-span-6 sm:col-span-4 bg-stone-100 w-2/5 flex justify-center py-2 rounded">
-                  <button
-                    onClick={() => SetShowModal(!showModal)}
-                    type="button"
-                  >
-                    Add Artist
-                  </button>
+                <div
+                  onClick={() => SetShowModal(!showModal)}
+                  className="col-span-6 sm:col-span-4 bg-stone-100 w-2/5 flex justify-center py-2 rounded cursor-pointer"
+                >
+                  <button type="button">Add Artist</button>
                 </div>
               </div>
             </div>

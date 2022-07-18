@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Navbar from './../components/Navbar'
-const Home = (user) => {
+const Home = () => {
   const navigate = useNavigate()
   const [showSongs, SetShowSongs] = useState(true)
   return (
     <>
-      <Navbar user={user}/>
+      <Navbar/>
       <div className="h-screen">
         <div className="h-full w-32 top-20 left-0 fixed bg-gray-500 text-white flex flex-col items-center justify-between text-xl pb-28 pt-4 font-medium">
           <div className="flex flex-col  space-y-10">

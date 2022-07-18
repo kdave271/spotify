@@ -30,7 +30,8 @@ const LoginForm = () => {
           if (res.data['userExist'] === false) SetAlert(!alert)
           else
           {
-            navigate('/home', { state: res.data[0] })
+            sessionStorage.setItem('userCred',JSON.stringify(res.data[0]))
+            navigate('/home')
           }
         })
     } catch (err) {

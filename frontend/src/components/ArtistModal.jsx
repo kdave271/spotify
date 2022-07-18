@@ -1,11 +1,31 @@
-import React from 'react'
+import axios from 'axios'
+import React,{useState} from 'react'
 
 const ArtistModal = ({ data, updateData }) => {
-  // submitFun(e)
-  // {
-  //   e.preventDefault()
-  //   console.log()
-  // }
+  const [formValue, SetFormValue] = useState({
+    name: '',
+    dob: '',
+    bio:''
+  })
+  const handleChange = event => {
+    SetFormValue({
+      ...formValue,
+      [event.target.name]: event.target.value
+    })
+  }
+  const addArtist = async(e)=>{
+    e.preventDefault()
+    try {
+      await axios.post('http://localhost:5000/info/artist', {
+        name: formValue.name,
+        dob: formValue.dob,
+        bio: formValue.bio
+      }).then(res=>console.log(res))
+    } catch (error) {
+      console.log(error)
+    }
+    updateData(!data)
+  }
   return (
     <>
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -15,57 +35,57 @@ const ArtistModal = ({ data, updateData }) => {
               <h3 className="text-3xl font-semibold">Add Artist</h3>
             </div>
             <div className="relative p-6 flex-auto">
-              <form
-                action="#"
-                onSubmit={() => {
-                  console.log('Button pressed')
-                  updateData(!data)
-                }}
-                method="POST"
-              >
-                <div class="shadow overflow-hidden sm:rounded-md">
-                  <div class="px-4 py-5 bg-white sm:p-6">
-                    <div class="grid grid-cols-6 gap-6">
-                      <div class="col-span-6 sm:col-span-3">
+              <form action="#" onSubmit={addArtist} method="POST">
+                <div className="shadow overflow-hidden sm:rounded-md">
+                  <div className="px-4 py-5 bg-white sm:p-6">
+                    <div className="grid grid-cols-6 gap-6">
+                      <div className="col-span-6 sm:col-span-3">
                         <label
-                          htmlFor="first-name"
-                          class="block text-sm font-medium text-gray-700"
+                          htmlFor="name"
+                          className="block text-sm font-medium text-gray-700"
                         >
                           Artist Name
                         </label>
                         <input
                           type="text"
-                          name="first-name"
-                          id="first-name"
-                          autocomplete="given-name"
-                          class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-400 border-2 rounded"
+                          name="name"
+                          id="name"
+                          required
+                          onChange={handleChange}
+                          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-400 border-2 rounded"
                         />
                       </div>
-                      <div class="col-span-6 sm:col-span-4">
+                      <div className="col-span-6 sm:col-span-4">
                         <label
-                          htmlFor="email-address"
-                          class="block text-sm font-medium text-gray-700"
+                          htmlFor="dob"
+                          className="block text-sm font-medium text-gray-700"
                         >
                           Date of Birth
                         </label>
                         <input
                           type="Date"
-                          name="email-address"
-                          id="email-address"
-                          autocomplete="email"
-                          class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm  border-gray-400 border-2 rounded"
+                          name="dob"
+                          id="dob"
+                          required
+                          onChange={handleChange}
+                          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm  border-gray-400 border-2 rounded"
                         />
                       </div>
-                      <div class="col-span-6 sm:col-span-3">
+                      <div className="col-span-6 sm:col-span-3">
                         <label
                           htmlFor="bio"
-                          class="block text-sm font-medium text-gray-700"
+                          className="block text-sm font-medium text-gray-700"
                         >
                           Bio
                         </label>
-                        <textarea className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-400 border-2 rounded"></textarea>
+                        <textarea
+                          name="bio"
+                          id="bio"
+                          onChange={handleChange}
+                          className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-400 border-2 rounded"
+                        ></textarea>
                       </div>
-                      <div class="col-span-6 sm:col-span-4">
+                      <div className="col-span-6 sm:col-span-4 bg-blue-500 flex justify-center w-20 rounded">
                         <button type="submit">Save</button>
                       </div>
                     </div>

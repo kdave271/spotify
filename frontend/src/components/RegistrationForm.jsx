@@ -23,10 +23,11 @@ const RegistrationForm = () => {
           password: password
         })
         .then(res => {
-          if (res.data['userExist']) 
-            SetAlert(!alert)
-          else
-            navigate('/home', { state: res.data[0] })
+          if (res.data['userExist']) SetAlert(!alert)
+          else {
+            sessionStorage.setItem('userCred', JSON.stringify(res.data[0]))
+            navigate('/home')
+          }
         })
     } catch (err) {
       console.log(err)
