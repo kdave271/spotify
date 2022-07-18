@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Navbar from './../components/Navbar'
 const Home = () => {
+  const navigate = useNavigate()
   const [showSongs, SetShowSongs] = useState(true)
   return (
     <>
@@ -15,7 +17,7 @@ const Home = () => {
           </div>
           {showSongs && (
             <div className="">
-              <button>Add Song</button>
+              <button onClick={()=> navigate('/addsong')}>Add Song</button>
             </div>
           )}
         </div>
