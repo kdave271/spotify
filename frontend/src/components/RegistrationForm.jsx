@@ -13,7 +13,7 @@ const RegistrationForm = () => {
     SetAlert(false)
   }, 3000)
 
-  const addUser = async e => {
+  const addUser = async (e) => {
     e.preventDefault()
     try {
       await axios
@@ -23,9 +23,11 @@ const RegistrationForm = () => {
           password: password
         })
         .then(res => {
-          console.log('result: ', res)
+          if (res.data['userExist']) 
+            SetAlert(!alert)
+          else
+            navigate('/home', { state: res.data[0] })
         })
-      navigate('/home')
     } catch (err) {
       console.log(err)
     }

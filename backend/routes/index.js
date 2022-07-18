@@ -9,7 +9,7 @@ router.get('/allartist',getAllArtist)
 router.post('/song',addSong)
 router.post('/artist',addArtist)
 router.patch('/:id',updateSongRating)
-router.get('/getuser',getUser)
+router.post('/getuser',getUser)
 router.post('/adduser', createUser)
 
 export default router

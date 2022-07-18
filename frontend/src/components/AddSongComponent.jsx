@@ -1,6 +1,7 @@
-import React from 'react'
-
-const AddSongComponent = ({data,updateData}) => {
+import React,{useState} from 'react'
+import ArtistModal from './ArtistModal'
+const AddSongComponent = () => {
+  const [showModal, SetShowModal] = useState(false)
   return (
     <div className="flex flex-col items-center py-10 space-y-5">
       <span className="text-2xl font-medium ">Add New Song</span>
@@ -79,7 +80,10 @@ const AddSongComponent = ({data,updateData}) => {
                   </select>
                 </div>
                 <div className="col-span-6 sm:col-span-4 bg-stone-100 w-2/5 flex justify-center py-2 rounded">
-                  <button onClick={() => updateData(!data)} type="button">
+                  <button
+                    onClick={() => SetShowModal(!showModal)}
+                    type="button"
+                  >
                     Add Artist
                   </button>
                 </div>
@@ -96,6 +100,7 @@ const AddSongComponent = ({data,updateData}) => {
           </div>
         </form>
       </div>
+      {showModal && <ArtistModal data={showModal} updateData={SetShowModal} />}
     </div>
   )
 }

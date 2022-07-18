@@ -29,8 +29,8 @@ export const addSong = async (req, res) => {
   try {
     await song.create(req.body)
     await artistSong.create({
-      song_id: req.param.songId,
-      artist_id: req.param.artitstId
+      song_id: req.body.songId,
+      artist_id: req.body.artitstId
     })
     res.json({ message: 'Song Added' })
   } catch (error) {
@@ -49,43 +49,43 @@ export const updateSongRating = async (req, res) => {
   try {
     await song.update(req.body, {
       where: {
-        id: req.param.id
+        id: req.body.id
       }
     })
   } catch (error) {
     res.json({ message: error.message })
   }
 }
-export const createUser = async(req,res)=>{
+export const createUser = async (req, res) => {
   try {
     let user = await users.findAll({
-      where:{
-        email:req.body.email
+      where: {
+        email: req.body.email
       }
     })
-    if(!user)
-    {
-      // user = await users.create(req.body)
-      console.log('Not found');
-      res.send({ message: 'User Already Exist' })
-    }
-    else{
-      console.log("user found")
-      res.json({"message":"User Already Exist"})
+    if (user.length == 0) {
+      const newUser = await users.create(req.body)
+      res.json(newUser)
+    } else {
+      res.json({ userExist: true })
     }
   } catch (error) {
     res.json({ message: error.message })
   }
 }
-export const getUser = async (req,res)=>{
+export const getUser = async (req, res) => {
   try {
     const user = await users.findAll({
       where: {
-        email: req.param.email,
-        password: req.param.password
+        email: req.body.email,
+        password: req.body.password
       }
     })
-    res.json(user)
+    if (user.length == 0) {
+      res.json({ userExist: false })
+    } else {
+      res.json(user)
+    }
   } catch (error) {
     res.json({ message: error.message })
   }
