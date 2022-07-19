@@ -1,18 +1,43 @@
 import { artist, artistSong, song, users } from './../models/infoModel.js'
 
-export const addArtistSong = async(req,res)=>{
+export const addArtistSong = async (req, res) => {
   try {
     await artistSong.create(req.body)
   } catch (error) {
     res.json({ message: error.message })
   }
 }
+export const getArtistSong = async (req, res) => {
+  if (req.body.song_id) {
+    try {
+      const artist_ids = await artistSong.findAll({
+        where: {
+          song_id: req.body.song_id
+        }
+      })
+      res.json(artist_ids)
+    } catch (error) {
+      res.json({ message: error.message })
+    }
+  } else {
+    try {
+      const song_ids = await artistSong.findAll({
+        where: {
+          artist_id: req.body.artist_id
+        }
+      })
+      res.json(song_ids)
+    } catch (error) {
+      res.json({ message: error.message })
+    }
+  }
+}
 
 export const addSong = async (req, res) => {
   try {
     const newSong = await song.create({
-      title:req.body.title,
-      date_of_release:req.body.date_of_release
+      title: req.body.title,
+      date_of_release: req.body.date_of_release
     })
     res.json(newSong)
   } catch (error) {
@@ -21,8 +46,7 @@ export const addSong = async (req, res) => {
 }
 export const getTop10Songs = async (req, res) => {
   try {
-    let songs = await song.findAll({ order: ['rating', 'DESC'] })
-    songs = songs.slice(0, 10)
+    let songs = await song.findAll()
     res.json(songs)
   } catch (error) {
     res.json({ message: error.message })
@@ -38,8 +62,8 @@ export const addArtist = async (req, res) => {
 }
 export const getTop10Artist = async (req, res) => {
   try {
-    const artist = await artist.findAll()
-    res.json(artist)
+    const artists = await artist.findAll()
+    res.json(artists)
   } catch (error) {
     res.json({ message: error.message })
   }
@@ -52,7 +76,6 @@ export const getAllArtist = async (req, res) => {
     res.json({ message: error.message })
   }
 }
-
 
 export const updateSongRating = async (req, res) => {
   try {

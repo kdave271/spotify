@@ -1,12 +1,16 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 import ArtistModal from './ArtistModal'
 const AddSongComponent = () => {
+  const navigate = useNavigate()
   const [formValue, SetFormValue] = useState({
     title: '',
     date_of_release: ''
   })
   // const [artwork,SetArtwork] = useState(null)
+
   const [artists, SetArtist] = useState([])
   const [showModal, SetShowModal] = useState(false)
   const [artistValue, SetArtistValue] = useState(-1)
@@ -40,10 +44,12 @@ const AddSongComponent = () => {
         })
         .then(async res => {
           try {
-            await axios.post('http://localhost:5000/info/artistsong', {
-              song_id: res.data.id,
-              artist_id: artistValue
-            })
+            await axios
+              .post('http://localhost:5000/info/artistsong', {
+                song_id: res.data.id,
+                artist_id: artistValue
+              })
+              .then(res => navigate('/addsong'))
           } catch (error) {
             console.log(error)
           }
