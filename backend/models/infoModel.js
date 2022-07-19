@@ -16,7 +16,7 @@ const song = db.define(
       type: DataTypes.INTEGER
     },
     image: {
-      type: DataTypes.BLOB('long')
+      type: DataTypes.STRING(1234)
     }
   },
   { freezeTableName: true }
