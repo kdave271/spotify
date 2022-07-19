@@ -1,13 +1,20 @@
 import { artist, artistSong, song, users } from './../models/infoModel.js'
 
+export const addArtistSong = async(req,res)=>{
+  try {
+    await artistSong.create(req.body)
+  } catch (error) {
+    res.json({ message: error.message })
+  }
+}
+
 export const addSong = async (req, res) => {
   try {
-    await song.create(req.body)
-    await artistSong.create({
-      song_id: req.body.songId,
-      artist_id: req.body.artitstId
+    const newSong = await song.create({
+      title:req.body.title,
+      date_of_release:req.body.date_of_release
     })
-    res.json({ message: 'Song Added' })
+    res.json(newSong)
   } catch (error) {
     res.json({ message: error.message })
   }

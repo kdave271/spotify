@@ -1,5 +1,5 @@
 import express from "express"
-import {getAllArtist,getTop10Artist,getTop10Songs,addArtist,addSong,updateSongRating,getUser,createUser} from "./../controllers/info.js"
+import {getAllArtist,getTop10Artist,getTop10Songs,addArtist,addSong,updateSongRating,getUser,createUser,addArtistSong} from "./../controllers/info.js"
 
 const router = express.Router();
 
@@ -11,5 +11,6 @@ router.post('/artist',addArtist)
 router.patch('/:id',updateSongRating)
 router.post('/getuser',getUser)
 router.post('/adduser', createUser)
+router.post('/artistsong',addArtistSong)
 
 export default router
