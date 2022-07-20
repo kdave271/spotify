@@ -14,7 +14,7 @@ const AddSongComponent = () => {
   const [artists, SetArtist] = useState([])
   const [showModal, SetShowModal] = useState(false)
   const [artistValue, SetArtistValue] = useState(-1)
-
+  const [refresh, SetRefresh] = useState(true)
   const handleChange = event => {
     SetFormValue({
       ...formValue,
@@ -32,9 +32,10 @@ const AddSongComponent = () => {
 
   useEffect(() => {
     getArtists()
-  }, [])
+  }, [showModal])
 
   const handleSubmit = async e => {
+    SetRefresh(!refresh)
     e.preventDefault()
     try {
       await axios

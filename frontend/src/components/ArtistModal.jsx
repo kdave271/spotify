@@ -20,7 +20,7 @@ const ArtistModal = ({ data, updateData }) => {
         name: formValue.name,
         dob: formValue.dob,
         bio: formValue.bio
-      }).then(res=>console.log(res))
+      })
     } catch (error) {
       console.log(error)
     }

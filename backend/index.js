@@ -1,19 +1,21 @@
-import express from "express";
-import db from "./config/database.js"
-import infoRoutes from "./routes/index.js"
-import cors from "cors"
+import cors from 'cors'
+import express from 'express'
+import db from './config/database.js'
+import infoRoutes from './routes/index.js'
 
 const app = express()
 
-try{
+try {
   await db.authenticate()
-  console.log("Database connected")
-}catch(error){
+  console.log('Database connected')
+} catch (error) {
   console.log(error)
 }
 
-app.use(cors());
+app.use(cors())
 app.use(express.json())
-app.use('/info',infoRoutes)
+app.use('/info', infoRoutes)
 
-app.listen(5000,()=>console.log('Server running at port 5000'))
+db.sync({ force: false }).then(() => {
+  app.listen(5000, () => console.log('Server running at port 5000'))
+})

@@ -79,11 +79,24 @@ export const getAllArtist = async (req, res) => {
 
 export const updateSongRating = async (req, res) => {
   try {
-    await song.update(req.body, {
+    console.log(req.body)
+    const currSong = await song.findAll({
       where: {
         id: req.body.id
       }
     })
+    const updatedRating = currSong[0].dataValues.rating + req.body.rating
+    await song.update(
+      {
+        rating:updatedRating
+      },
+      {
+        where: {
+          id: req.body.id
+        }
+      }
+    )
+    req.json({message:'Succeeded'})
   } catch (error) {
     res.json({ message: error.message })
   }

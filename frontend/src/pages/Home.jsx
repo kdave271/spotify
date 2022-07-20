@@ -1,14 +1,14 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import ReactStars from 'react-rating-stars-component'
+import { useNavigate } from 'react-router-dom'
 import Navbar from './../components/Navbar'
 const Home = () => {
   const navigate = useNavigate()
   const [showSongs, SetShowSongs] = useState(true)
   const [songs, SetSongs] = useState([])
   const [artists, SetArtists] = useState([])
-
+  const [ratings, SetRating] = useState(0)
   const getSongs = async () => {
     try {
       const topSongs = await axios.get('http://localhost:5000/info/top10songs')
@@ -21,13 +21,27 @@ const Home = () => {
     try {
       const topartists = await axios.get('http://localhost:5000/info/allartist')
       SetArtists(topartists.data)
-      console.log('topArtist: ',topartists)
     } catch (error) {
       console.log(error)
     }
   }
   const ratingChanged = newRating => {
-    console.log(newRating)
+    SetRating(newRating)
+  }
+  const submitRating = async songid => {
+    try {
+      await axios
+        .patch('http://localhost:5000/info/updaterating', {
+          id: songid,
+          rating: ratings
+        })
+        .then(res => {
+          console.log(res)
+          SetRating(0)
+        })
+    } catch (error) {
+      console.log(error)
+    }
   }
   useEffect(() => {
     getSongs()
@@ -82,15 +96,28 @@ const Home = () => {
                             {song.title}
                           </th>
                           <td className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                            <ReactStars
-                              count={5}
-                              onChange={ratingChanged}
-                              size={24}
-                              activeColor="#ffd700"
-                            />
+                            <div className="flex space-x-5">
+                              <ReactStars
+                                count={5}
+                                onChange={ratingChanged}
+                                size={24}
+                                activeColor="#ffd700"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => submitRating(song.id)}
+                                className="bg-blue-500 rounded-sm p-1"
+                              >
+                                Rate
+                              </button>
+                            </div>
                           </td>
                           <td className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                            {song.date_of_release}
+                            {song.date_of_release
+                              .split('T')[0]
+                              .split('-')
+                              .reverse()
+                              .join('-')}
                           </td>
                         </tr>
                       ))}
@@ -129,7 +156,11 @@ const Home = () => {
                             {artist.name}
                           </td>
                           <td className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                            {artist.dob}
+                            {artist.dob
+                              .split('T')[0]
+                              .split('-')
+                              .reverse()
+                              .join('-')}
                           </td>
                           <td className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                             {artist.bio}
