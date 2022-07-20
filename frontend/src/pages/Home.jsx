@@ -12,15 +12,31 @@ const Home = () => {
   const getSongs = async () => {
     try {
       const topSongs = await axios.get('http://localhost:5000/info/top10songs')
-      SetSongs(topSongs.data)
+      SetSongs(topSongs.data.slice(0, 10))
+      console.log(songs)
     } catch (error) {
       console.log(error)
     }
   }
+  function structureArtistData(topArtists) {
+    const allArtist = topArtists.map(artist => {
+      artist.rating = 0
+      artist.songs.map(song => {
+        artist.rating += song.rating
+      })
+      return artist
+    })
+    allArtist.sort((a, b) => {
+      return b.rating - a.rating
+    })
+    SetArtists(allArtist)
+  }
   const getArtists = async () => {
     try {
-      const topartists = await axios.get('http://localhost:5000/info/allartist')
-      SetArtists(topartists.data)
+      await axios.get('http://localhost:5000/info/top10artist').then(res => {
+        // SetArtists(res.data)
+        structureArtistData(res.data)
+      })
     } catch (error) {
       console.log(error)
     }
@@ -66,7 +82,12 @@ const Home = () => {
             Artist
           </button>
           {showSongs && (
-            <button className="bg-slate-400 w-full py-2" onClick={() => navigate('/addsong')}>Add Song</button>
+            <button
+              className="bg-slate-400 w-full py-2"
+              onClick={() => navigate('/addsong')}
+            >
+              Add Song
+            </button>
           )}
         </div>
         <div className="col-start-2 col-end-4">
@@ -85,6 +106,9 @@ const Home = () => {
                             Song Title
                           </th>
                           <th scope="col" className="px-6 py-3">
+                            Artist
+                          </th>
+                          <th scope="col" className="px-6 py-3">
                             Rating
                           </th>
                           <th scope="col" className="px-6 py-3">
@@ -101,6 +125,13 @@ const Home = () => {
                             <th className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                               {song.title}
                             </th>
+                            <td className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                              <div className="flex flex-col space-y-1">
+                                {song.artists.map(artist => (
+                                  <span>{artist.name}</span>
+                                ))}
+                              </div>
+                            </td>
                             <td className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                               <div className="flex space-x-5">
                                 <ReactStars
@@ -148,6 +179,9 @@ const Home = () => {
                             Artist name
                           </th>
                           <th scope="col" className="px-6 py-3">
+                            Song
+                          </th>
+                          <th scope="col" className="px-6 py-3">
                             DOB
                           </th>
                           <th scope="col" className="px-6 py-3">
@@ -160,6 +194,13 @@ const Home = () => {
                           <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <td className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                               {artist.name}
+                            </td>
+                            <td className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                              <div className="flex flex-col space-y-1">
+                                {artist.songs.map(song => (
+                                  <span>{song.title}</span>
+                                ))}
+                              </div>
                             </td>
                             <td className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                               {artist.dob

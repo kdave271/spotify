@@ -1,4 +1,4 @@
-import { artist, artistSong, song, users } from './../models/infoModel.js'
+import { artist, artistSong, song, user } from './../models/infoModel.js'
 
 export const addArtistSong = async (req, res) => {
   try {
@@ -12,7 +12,7 @@ export const getArtistSong = async (req, res) => {
     try {
       const artist_ids = await artistSong.findAll({
         where: {
-          song_id: req.body.song_id
+          songId: req.body.songId
         }
       })
       res.json(artist_ids)
@@ -23,7 +23,7 @@ export const getArtistSong = async (req, res) => {
     try {
       const song_ids = await artistSong.findAll({
         where: {
-          artist_id: req.body.artist_id
+          artistId: req.body.artistId
         }
       })
       res.json(song_ids)
@@ -46,7 +46,14 @@ export const addSong = async (req, res) => {
 }
 export const getTop10Songs = async (req, res) => {
   try {
-    let songs = await song.findAll()
+    let songs = await song.findAll({
+      include: [
+        {
+          model: artist
+        }
+      ],
+      order: [['rating', 'DESC']]
+    })
     res.json(songs)
   } catch (error) {
     res.json({ message: error.message })
@@ -62,7 +69,13 @@ export const addArtist = async (req, res) => {
 }
 export const getTop10Artist = async (req, res) => {
   try {
-    const artists = await artist.findAll()
+    const artists = await artist.findAll({
+      include: [
+        {
+          model: song
+        }
+      ]
+    })
     res.json(artists)
   } catch (error) {
     res.json({ message: error.message })
@@ -88,7 +101,7 @@ export const updateSongRating = async (req, res) => {
     const updatedRating = currSong[0].dataValues.rating + req.body.rating
     await song.update(
       {
-        rating:updatedRating
+        rating: updatedRating
       },
       {
         where: {
@@ -96,20 +109,20 @@ export const updateSongRating = async (req, res) => {
         }
       }
     )
-    req.json({message:'Succeeded'})
+    req.json({ message: 'Succeeded' })
   } catch (error) {
     res.json({ message: error.message })
   }
 }
 export const createUser = async (req, res) => {
   try {
-    let user = await users.findAll({
+    let users = await user.findAll({
       where: {
         email: req.body.email
       }
     })
-    if (user.length == 0) {
-      const newUser = await users.create(req.body)
+    if (users.length == 0) {
+      const newUser = await user.create(req.body)
       res.json(newUser)
     } else {
       res.json({ userExist: true })
@@ -120,16 +133,16 @@ export const createUser = async (req, res) => {
 }
 export const getUser = async (req, res) => {
   try {
-    const user = await users.findAll({
+    const users = await user.findAll({
       where: {
         email: req.body.email,
         password: req.body.password
       }
     })
-    if (user.length == 0) {
+    if (users.length == 0) {
       res.json({ userExist: false })
     } else {
-      res.json(user)
+      res.json(users)
     }
   } catch (error) {
     res.json({ message: error.message })

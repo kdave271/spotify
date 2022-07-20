@@ -44,8 +44,8 @@ const AddSongComponent = () => {
           try {
             await axios
               .post('http://localhost:5000/info/artistsong', {
-                song_id: res.data.id,
-                artist_id: artistValue
+                songId: res.data.id,
+                artistId: artistValue
               })
           } catch (error) {
             console.log(error)

@@ -4,7 +4,7 @@ import db from './../config/database.js'
 const { DataTypes } = Sequelize
 
 const song = db.define(
-  'song',
+  'songs',
   {
     title: {
       type: DataTypes.STRING(1234)
@@ -24,7 +24,7 @@ const song = db.define(
   { freezeTableName: true }
 )
 const artist = db.define(
-  'artist',
+  'artists',
   {
     name: {
       type: DataTypes.STRING(1234)
@@ -40,7 +40,7 @@ const artist = db.define(
   { freezeTableName: true }
 )
 
-const users = db.define(
+const user = db.define(
   'users',
   {
     name: {
@@ -60,14 +60,14 @@ const users = db.define(
 const artistSong = db.define(
   'artist_songs',
   {
-    song_id: {
+    songId: {
       type: DataTypes.INTEGER
     },
-    artist_id: {
+    artistId: {
       type: DataTypes.INTEGER
     }
   },
   { timestamps: false },
   { freezeTableName: true }
 )
-export { song, artist, users, artistSong }
+export { song, artist, user, artistSong }
