@@ -9,7 +9,8 @@ import {
   getTop10Artist,
   getTop10Songs,
   getUser,
-  updateSongRating
+  updateSongRating,
+  addRating
 } from './../controllers/info.js'
 
 const router = express.Router()
@@ -19,7 +20,7 @@ router.get('/top10artist', getTop10Artist)
 router.get('/allartist', getAllArtist)
 router.post('/song', addSong)
 router.post('/artist', addArtist)
-router.patch('/updaterating', updateSongRating)
+router.patch('/updaterating', addRating)
 router.post('/getuser', getUser)
 router.post('/adduser', createUser)
 router.post('/artistsong', addArtistSong)

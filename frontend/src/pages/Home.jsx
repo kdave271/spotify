@@ -46,14 +46,12 @@ const Home = () => {
   }
   const submitRating = async songid => {
     try {
+      const userId = JSON.parse(sessionStorage.getItem('userCred'))
       await axios
         .patch('http://localhost:5000/info/updaterating', {
-          id: songid,
+          songId: songid,
+          userId: userId.id,
           rating: ratings
-        })
-        .then(res => {
-          console.log(res)
-          SetRating(0)
         })
     } catch (error) {
       console.log(error)

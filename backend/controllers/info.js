@@ -1,4 +1,10 @@
-import { artist, artistSong, song, user } from './../models/infoModel.js'
+import {
+  artist,
+  artistSong,
+  song,
+  user,
+  userRating
+} from './../models/infoModel.js'
 
 export const addArtistSong = async (req, res) => {
   try {
@@ -33,6 +39,33 @@ export const getArtistSong = async (req, res) => {
   }
 }
 
+export const addRating = async (req, res) => {
+  try {
+    const isUserRate = await userRating.findAll({
+      where: {
+        songId: req.body.songId,
+        userId: req.body.userId
+      }
+    })
+    console.log(isUserRate)
+    if (isUserRate.length) {
+      await userRating.update(
+        { rating: req.body.rating },
+        { where: { songId: req.body.songId, userId: req.body.userId } }
+      )
+    } else {
+      await userRating.create({
+        songId: req.body.songId,
+        userId: req.body.userId,
+        rating: req.body.rating
+      })
+    }
+    res.json({ message: 'Succeeded' })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const addSong = async (req, res) => {
   try {
     const newSong = await song.create({
@@ -54,6 +87,7 @@ export const getTop10Songs = async (req, res) => {
       ],
       order: [['rating', 'DESC']]
     })
+    console.log(songs)
     res.json(songs)
   } catch (error) {
     res.json({ message: error.message })
@@ -92,7 +126,6 @@ export const getAllArtist = async (req, res) => {
 
 export const updateSongRating = async (req, res) => {
   try {
-    console.log(req.body)
     const currSong = await song.findAll({
       where: {
         id: req.body.id

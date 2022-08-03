@@ -57,6 +57,23 @@ const user = db.define(
   { freezeTableName: true }
 )
 
+const userRating = db.define(
+  'user_ratings',
+  {
+    userId: {
+      type: DataTypes.INTEGER
+    },
+    songId: {
+      type: DataTypes.INTEGER
+    },
+    rating: {
+      type: DataTypes.INTEGER
+    }
+  },
+  { timestamps: false },
+  { freezeTableName: true }
+)
+
 const artistSong = db.define(
   'artist_songs',
   {
@@ -70,4 +87,4 @@ const artistSong = db.define(
   { timestamps: false },
   { freezeTableName: true }
 )
-export { song, artist, user, artistSong }
+export { song, artist, user, artistSong, userRating }
